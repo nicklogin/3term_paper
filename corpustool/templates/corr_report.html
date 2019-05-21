@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <link href="{% static "basic.css" %}" rel="stylesheet" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">TextPoints</div>
+            <div class="underlogo">a corpus distribution analyzer</div>
+        </header>
+        <div class="corrview">
+            <h1>Correlation analysis results:</h1> <br />
+            <div>
+                <img src="{{ image }}" /> <br /><br />
+            </div>
+            <div class="pairstats">
+                <h3>Correlation summary: </h3><br />
+                {% for corr in correlations %}
+                <b>Corpus {{ corr.0 }}</b>: Pearson's <i>R</i>: {{ corr.1.0 }} (p-value: {{ corr.1.1 }}); <i>y = {{ corr.1.3 }}x + {{ corr.1.2 }}</i> <br />
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="paircomp">
+            <h2>Tests of equity: </h2><br />
+            <br />
+            <span style="color: black">black</span> - no significant difference between correltion coefficients (<i>a</i> &gt; 0.1) <br />
+            <span style="color: yellow">yellow</span> - possible significant difference between correlation coefficients (<i>a</i> &lt;= 0.1)<br />
+            <span style="color: orange">orange</span> - significant difference between correlation coefficients (<i>a</i> &lt;= 0.05)<br />
+            <span style="color: red">red</span> - highly significant difference between correlation coefficients (<i>a</i> &lt;= 0.01)<br />
+            <br />
+
+            <table>
+                <tr>
+                    <th>Corpus 1\Corpus 2</th>
+                    {% for corr in correlations %}
+                    <th>{{ corr.0 }}</th>
+                    {% endfor %}
+                </tr>
+                {% for corpus in r2_stats %}
+                <tr>
+                <th>{{ corpus.0.0 }}</th>
+                {% for stat in corpus.1 %}
+                <td style="color:{{ stat.2|safe }}">t: {{ stat.0 }}<br />p-value: {{ stat.1}}</td>
+                {% endfor %}
+                </tr>
+                {% endfor %}
+            </table><br /><br />
+        </div>
+
+        <div class="regressions">
+            <h1>Regression analysis results:</h1> <br />
+            {% for regr in regressions %}
+            <h3>Corpus '{{ regr.0 }}' </h3><br />
+            <div class="twotables">
+                <div>{{ regr.1.0|safe }} </div>
+                <div>{{ regr.1.1|safe }} </div>
+                <!-- <div>{{ regr.1.2|safe }} </div> -->
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

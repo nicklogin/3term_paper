@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <script type="text/javascript" src="{% static "basic.js" %}"></script>
+        <link href="{% static "basic.css" %}" rel="stylesheet" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">TextPoints</div>
+            <div class="underlogo">a corpus distribution analyzer</div>
+        </header>
+        <div class="modes">
+            <b>Pairwise correlations</b> <a href="/entityStats">Frequencies of units</a><br />
+        </div>
+        <div class="contrpanel">
+            <select hidden id="depTypes">
+                <option value="na" selected>Not specified</option>
+                {% for dep in deps %}
+                <option value="dep">{{ dep }}</option>
+                {% endfor %}
+            </select>
+            <h2> Welcome to interactive tool for corpus analysis! </h2>
+            <span class="writing">Select subcorpora: </span><br />
+            <button onclick="addOneMore()">+</button>
+            <form action="showCorrelation/" target="_blank" method="POST">
+                {% csrf_token %}
+                <div id="extraLing">
+                    <div id="extraLing0" class="querypanel">
+                        Date (from): <input type="date" id="date_start_selector0" name="subcorpus0-date__gte">
+                        Date (to): <input type="date" id="date_end_selector0" name="subcorpus0-date__lte">
+                        Mark (from): <input type="number" id="mark_start_selector0" name="subcorpus0-mark__gte" min="0" max="100">
+                        Mark (to): <input type="number" id="mark_end_selector0" name="subcorpus0-mark__lte" min="0" max="100">
+                        Sex of the author: <select id="sex_selector" name="subcorpus0-sex">
+                            <option value="na" selected>Not specified</option>
+                            <option value="m">m</option>
+                            <option value="f">f</option>
+                        </select>
+                        Department: <select id="department_selector" name="subcorpus0-department">
+                            <option value="na" selected>Not specified</option>
+                            {% for department_option in department_options %}
+                            <option value="{{ department_option|safe }}">{{ department_option }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <span class="writing">Specify first linguistic variable for correlation analysis: </span><br />
+                <input type="hidden" id="itemTypeLing1" name="var1-type" value="singleItem">
+                <div id="Ling1" class="querypanel">
+                    Token: <input type="text" name="var1-token__text">
+                    Morph tag: <select id="pos_selector" name="var1-token__xpos">
+                        <option value="na" selected>Not specified</option>
+                        {% for tag in tags %}
+                        <option value="{{ tag|safe }}">{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+                    Lemma: <input type="text" name="var1-token__lemma__text">
+                    POS: <select id="pos_selector" name="var1-token__lemma__pos">
+                            <option value="na" selected>Not specified</option>
+                            {% for pos in parts_of_speech %}
+                            <option value="{{ pos|safe }}">{{ pos }}</option>
+                            {% endfor %}
+                        </select>
+                    <button type="button" id="buttonLing1" onclick="addDependant(this.parentElement)">Add dependency</button>
+                    <br />
+                </div><br />
+                <span class="writing">Specify second linguistic variable for correlation analysis: </span><br />
+                <input type="hidden" id="itemTypeLing2" name="var2-type" value="singleItem">
+                <div id="Ling2" class="querypanel">
+                    Token: <input type="text" name="var2-token__text">
+                    Morph tag: <select id="pos_selector" name="var2-token__xpos">
+                        <option value="na" selected>Not specified</option>
+                        {% for tag in tags %}
+                        <option value="{{ tag|safe }}">{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+                    Lemma: <input type="text" name="var2-token__lemma__text">
+                    POS: <select id="pos_selector" name="var2-token__lemma__pos">
+                            <option value="na" selected>Not specified</option>
+                            {% for pos in parts_of_speech %}
+                            <option value="{{ pos|safe }}">{{ pos }}</option>
+                            {% endfor %}
+                        </select>
+                    <button type="button" id="buttonLing2" onclick="addDependant(this.parentElement)">Add dependency</button>
+                    <br />
+                </div>
+                <input type="submit" value="Perform analysis">
+            </form>
+        </div>
+    </body>
+</html>
