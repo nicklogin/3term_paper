@@ -208,7 +208,7 @@ def show_correlation(request):
         
         return render(request, 'corr_report.html', args)
 
-    return HttpResponse('Run, you fools!')
+    return HttpResponse('Invalid request')
 
 @login_required
 def entity_stats(request):
@@ -324,4 +324,4 @@ def show_entity_stats(request):
 
         return render(request, 'show_entity_stats.html', args)
 
-    return HttpResponse('Run, you fools!')
+    return HttpResponse('Invalid request')
