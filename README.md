@@ -16,7 +16,7 @@
 
 - Скопируйте репозиторий на свой компьютер
 - Переместитесь в папку со скопированным репозиторием и установите все необходимые зависимости при помощи команд:
-'''pip3 install django spacy matplotlib numpy pandas scipy statsmodels '''
+```pip3 install django spacy matplotlib numpy pandas scipy statsmodels```
 - Установите следующие значения в файле settings.py вашего проекта
 
 ### Заполнение базы данных
